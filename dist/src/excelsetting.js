@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,16 +7,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ExcelSetting = void 0;
-const excelutil_1 = require("./excelutil");
-class ExcelSetting {
+import { ExcelUtil } from "./excelutil";
+export class ExcelSetting {
     constructor(sheetName, paramKeys, runner, baseCell = "A2") {
         this.settingsTemp = new Map();
         this.sheetName = sheetName;
         this.baseCell = baseCell;
         this.paramKeys = paramKeys;
-        this.excelUtil = new excelutil_1.ExcelUtil(sheetName, runner);
+        this.excelUtil = new ExcelUtil(sheetName, runner);
     }
     writeSettings(key, val) {
         this.settingsTemp = new Map();
@@ -53,4 +50,3 @@ class ExcelSetting {
         });
     }
 }
-exports.ExcelSetting = ExcelSetting;
