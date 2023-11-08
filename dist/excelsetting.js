@@ -7,10 +7,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "./excelutil"], function (require, exports, excelutil_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "./excelutil"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ExcelSetting = void 0;
+    const excelutil_1 = require("./excelutil");
     class ExcelSetting {
         constructor(sheetName, paramKeys, runner, baseCell = "A2") {
             this.settingsTemp = new Map();
