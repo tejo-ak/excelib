@@ -42,7 +42,5 @@ export type WriteSession = {
     baseCell: string;
 };
 export type ExcelRunner = {
-    run: {
-        (context: any): Promise<void>;
-    };
+    (context: any): Promise<void>;
 };

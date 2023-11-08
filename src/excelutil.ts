@@ -9,7 +9,7 @@ export class ExcelUtil {
     async replaceSheet() {
       let sheet = await this.getSheet();
       if (!!sheet) {
-        await this.excelRuner.run(async (context: any) => {
+        await this.excelRuner(async (context: any) => {
           sheet = context.workbook.worksheets.getItem(this.sheetName);
           sheet.delete();
           await context.sync();
@@ -19,7 +19,7 @@ export class ExcelUtil {
     }
     async getSheet(): Promise<any> {
       let sheet: any;
-      await this.excelRuner.run(async (context: any) => {
+      await this.excelRuner(async (context: any) => {
         const sheets = context.workbook.worksheets;
         sheets.load("items/name");
         await context.sync();
@@ -35,7 +35,7 @@ export class ExcelUtil {
     async ensureSheet(): Promise<any> {
       const sheet = await this.getSheet();
       if (!sheet) {
-        await this.excelRuner.run(async (context:any) => {
+        await this.excelRuner(async (context:any) => {
           context.workbook.worksheets.add(this.sheetName);
           await context.sync();
           return context.workbook.worksheets.getItem(this.sheetName);
@@ -64,7 +64,7 @@ export class ExcelUtil {
     async readValues(range: string): Promise<any> {
       this.ensureSheet();
       let val: any;
-      await this.excelRuner.run(async (context:any) => {
+      await this.excelRuner(async (context:any) => {
         const sheet = context.workbook.worksheets.getItem(this.sheetName);
         const filterRange = sheet.getRange(range);
         filterRange.load(["values"]);
@@ -78,7 +78,7 @@ export class ExcelUtil {
       if (!values) return;
       if (values.length <= 0) return;
       const sheet = await this.ensureSheet();
-      await this.excelRuner.run(async (context:any) => {
+      await this.excelRuner(async (context:any) => {
         const sheet = context.workbook.worksheets.getItem(this.sheetName);
         const range = ExcelUtil.calcRange(values, baseCell);
         const filterRange = sheet.getRange(range);
@@ -124,7 +124,7 @@ export class ExcelUtil {
     writeSessionTemp: WriteSession[] = Array();
     async sessionWrite(): Promise<void> {
       const sheet = await this.ensureSheet();
-      await this.excelRuner.run(async (context: any) => {
+      await this.excelRuner(async (context: any) => {
         const sheet = context.workbook.worksheets.getItem(this.sheetName);
         const ranges: any[] = new Array();
         for (const session of this.writeSessionTemp) {
@@ -173,6 +173,4 @@ export class ExcelUtil {
     values: any[][];
     baseCell: string;
   };
- export type ExcelRunner = {
-    run: {(context: any):Promise<void>}
-  };
+ export type ExcelRunner = {(context: any):Promise<void>};

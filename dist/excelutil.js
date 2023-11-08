@@ -21,7 +21,7 @@ class ExcelUtil {
         return __awaiter(this, void 0, void 0, function* () {
             let sheet = yield this.getSheet();
             if (!!sheet) {
-                yield this.excelRuner.run((context) => __awaiter(this, void 0, void 0, function* () {
+                yield this.excelRuner((context) => __awaiter(this, void 0, void 0, function* () {
                     sheet = context.workbook.worksheets.getItem(this.sheetName);
                     sheet.delete();
                     yield context.sync();
@@ -33,7 +33,7 @@ class ExcelUtil {
     getSheet() {
         return __awaiter(this, void 0, void 0, function* () {
             let sheet;
-            yield this.excelRuner.run((context) => __awaiter(this, void 0, void 0, function* () {
+            yield this.excelRuner((context) => __awaiter(this, void 0, void 0, function* () {
                 const sheets = context.workbook.worksheets;
                 sheets.load("items/name");
                 yield context.sync();
@@ -50,7 +50,7 @@ class ExcelUtil {
         return __awaiter(this, void 0, void 0, function* () {
             const sheet = yield this.getSheet();
             if (!sheet) {
-                yield this.excelRuner.run((context) => __awaiter(this, void 0, void 0, function* () {
+                yield this.excelRuner((context) => __awaiter(this, void 0, void 0, function* () {
                     context.workbook.worksheets.add(this.sheetName);
                     yield context.sync();
                     return context.workbook.worksheets.getItem(this.sheetName);
@@ -90,7 +90,7 @@ class ExcelUtil {
         return __awaiter(this, void 0, void 0, function* () {
             this.ensureSheet();
             let val;
-            yield this.excelRuner.run((context) => __awaiter(this, void 0, void 0, function* () {
+            yield this.excelRuner((context) => __awaiter(this, void 0, void 0, function* () {
                 const sheet = context.workbook.worksheets.getItem(this.sheetName);
                 const filterRange = sheet.getRange(range);
                 filterRange.load(["values"]);
@@ -107,7 +107,7 @@ class ExcelUtil {
             if (values.length <= 0)
                 return;
             const sheet = yield this.ensureSheet();
-            yield this.excelRuner.run((context) => __awaiter(this, void 0, void 0, function* () {
+            yield this.excelRuner((context) => __awaiter(this, void 0, void 0, function* () {
                 const sheet = context.workbook.worksheets.getItem(this.sheetName);
                 const range = ExcelUtil.calcRange(values, baseCell);
                 const filterRange = sheet.getRange(range);
@@ -161,7 +161,7 @@ class ExcelUtil {
     sessionWrite() {
         return __awaiter(this, void 0, void 0, function* () {
             const sheet = yield this.ensureSheet();
-            yield this.excelRuner.run((context) => __awaiter(this, void 0, void 0, function* () {
+            yield this.excelRuner((context) => __awaiter(this, void 0, void 0, function* () {
                 const sheet = context.workbook.worksheets.getItem(this.sheetName);
                 const ranges = new Array();
                 for (const session of this.writeSessionTemp) {
