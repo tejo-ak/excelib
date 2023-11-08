@@ -1,7 +1,5 @@
 export declare class ExcelUtil {
     excelRuner: ExcelRunner;
-    context: any;
-    sheet: any;
     sheetName: string;
     constructor(sheetName: string, excelRuner: ExcelRunner);
     replaceSheet(): Promise<void>;
