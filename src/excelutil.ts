@@ -1,3 +1,7 @@
+export function createUtil(sheetName: string, excelRuner: ExcelRunner):ExcelUtil{
+  return new ExcelUtil(sheetName, excelRuner);
+}
+
 export class ExcelUtil {
     excelRuner: ExcelRunner;
     sheetName: string = "";

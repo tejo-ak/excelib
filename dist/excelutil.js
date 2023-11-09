@@ -18,7 +18,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.ExcelUtil = void 0;
+    exports.ExcelUtil = exports.createUtil = void 0;
+    function createUtil(sheetName, excelRuner) {
+        return new ExcelUtil(sheetName, excelRuner);
+    }
+    exports.createUtil = createUtil;
     class ExcelUtil {
         constructor(sheetName, excelRuner) {
             this.sheetName = "";
