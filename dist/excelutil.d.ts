@@ -1,4 +1,3 @@
-export default function createUtil(sheetName: string, excelRuner: ExcelRunner): ExcelUtil;
 export declare class ExcelUtil {
     excelRuner: ExcelRunner;
     sheetName: string;

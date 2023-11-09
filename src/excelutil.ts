@@ -1,4 +1,4 @@
-export default function createUtil(sheetName: string, excelRuner: ExcelRunner):ExcelUtil{
+function createUtil(sheetName: string, excelRuner: ExcelRunner):ExcelUtil{
   return new ExcelUtil(sheetName, excelRuner);
 }
 

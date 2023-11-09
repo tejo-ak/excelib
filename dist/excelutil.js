@@ -22,7 +22,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     function createUtil(sheetName, excelRuner) {
         return new ExcelUtil(sheetName, excelRuner);
     }
-    exports.default = createUtil;
     class ExcelUtil {
         constructor(sheetName, excelRuner) {
             this.sheetName = "";
