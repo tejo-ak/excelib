@@ -1,3 +1,4 @@
+export declare function createUtil(sheetName: string, excelRuner: ExcelRunner): ExcelUtil;
 export declare class ExcelUtil {
     excelRuner: ExcelRunner;
     sheetName: string;
@@ -42,5 +43,5 @@ export type WriteSession = {
     baseCell: string;
 };
 export type ExcelRunner = {
-    (context: any): Promise<void>;
+    (context: any): Promise<any>;
 };

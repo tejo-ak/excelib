@@ -1,5 +1,6 @@
-function createUtil(sheetName: string, excelRuner: ExcelRunner):ExcelUtil{
-  return new ExcelUtil(sheetName, excelRuner);
+export function createUtil(sheetName: string, excelRuner: ExcelRunner):ExcelUtil{
+  const xl =  new ExcelUtil(sheetName, excelRuner);
+  return xl;
 }
 
 export class ExcelUtil {
@@ -177,4 +178,4 @@ export class ExcelUtil {
     values: any[][];
     baseCell: string;
   };
- export type ExcelRunner = {(context: any):Promise<void>};
+ export type ExcelRunner = {(context: any):Promise<any>};
