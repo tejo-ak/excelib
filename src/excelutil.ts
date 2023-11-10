@@ -1,9 +1,9 @@
-export function createUtil(sheetName: string, excelRuner: ExcelRunner):ExcelUtil{
+function createUtil(sheetName: string, excelRuner: ExcelRunner):ExcelUtil{
   const xl =  new ExcelUtil(sheetName, excelRuner);
   return xl;
 }
 
-export class ExcelUtil {
+class ExcelUtil {
     excelRuner: ExcelRunner;
     sheetName: string = "";
     constructor(sheetName: string, excelRuner: ExcelRunner) {
@@ -166,16 +166,16 @@ export class ExcelUtil {
       return result - 1;
     }
   }
-  export type SettingsChain = {
+  type SettingsChain = {
     addSettings: { (key: string, val: any): SettingsChain };
     write: { ():void };
   };
-  export type WriteSessionChain = {
+  type WriteSessionChain = {
     addWriteChain: { (values: any[][], baseCell: string): WriteSessionChain };
     sessionWrite: { (): Promise<void> };
   };
- export type WriteSession = {
+ type WriteSession = {
     values: any[][];
     baseCell: string;
   };
- export type ExcelRunner = {(context: any):Promise<any>};
+ type ExcelRunner = {(context: any):Promise<any>};

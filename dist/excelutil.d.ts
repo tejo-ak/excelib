@@ -1,5 +1,5 @@
-export declare function createUtil(sheetName: string, excelRuner: ExcelRunner): ExcelUtil;
-export declare class ExcelUtil {
+declare function createUtil(sheetName: string, excelRuner: ExcelRunner): ExcelUtil;
+declare class ExcelUtil {
     excelRuner: ExcelRunner;
     sheetName: string;
     constructor(sheetName: string, excelRuner: ExcelRunner);
@@ -22,7 +22,7 @@ export declare class ExcelUtil {
     static toColumnName(index: number): string;
     static toColumnNumber(val: string): number;
 }
-export type SettingsChain = {
+type SettingsChain = {
     addSettings: {
         (key: string, val: any): SettingsChain;
     };
@@ -30,7 +30,7 @@ export type SettingsChain = {
         (): void;
     };
 };
-export type WriteSessionChain = {
+type WriteSessionChain = {
     addWriteChain: {
         (values: any[][], baseCell: string): WriteSessionChain;
     };
@@ -38,10 +38,10 @@ export type WriteSessionChain = {
         (): Promise<void>;
     };
 };
-export type WriteSession = {
+type WriteSession = {
     values: any[][];
     baseCell: string;
 };
-export type ExcelRunner = {
+type ExcelRunner = {
     (context: any): Promise<any>;
 };

@@ -1,4 +1,3 @@
-import { ExcelUtil, ExcelRunner } from "./excelutil";
 export declare class ExcelSetting {
     sheetName: string;
     baseCell: string;
