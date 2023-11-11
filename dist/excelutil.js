@@ -8,6 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+};
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _ExcelUtil_writeSessionTemp;
 function createUtil(sheetName, excelRuner) {
     const xl = new ExcelUtil(sheetName, excelRuner);
     return xl;
@@ -15,7 +27,7 @@ function createUtil(sheetName, excelRuner) {
 class ExcelUtil {
     constructor(sheetName, excelRuner) {
         this.sheetName = "";
-        this.writeSessionTemp = Array();
+        _ExcelUtil_writeSessionTemp.set(this, Array());
         this.sheetName = sheetName;
         this.excelRuner = excelRuner;
     }
@@ -142,11 +154,25 @@ class ExcelUtil {
         });
     }
     startWriteSession(values, baseCell) {
-        this.writeSessionTemp = new Array();
+        __classPrivateFieldSet(this, _ExcelUtil_writeSessionTemp, new Array(), "f");
         return this.addWriteChain(values, baseCell);
     }
     addWriteChain(values, baseCell) {
-        this.writeSessionTemp.push({ values: values, baseCell: baseCell });
+        __classPrivateFieldGet(this, _ExcelUtil_writeSessionTemp, "f").push({ values: values, baseCell: baseCell });
+        return this;
+    }
+    addRowWriteChain(values, baseCell) {
+        const valuesArrays = new Array();
+        for (const val of values) {
+            valuesArrays.push([values]);
+        }
+        this.addWriteChain(valuesArrays, baseCell);
+        return this;
+    }
+    addColWriteChain(values, baseCell) {
+        const valuesArrays = new Array();
+        valuesArrays.push(values);
+        this.addWriteChain(valuesArrays, baseCell);
         return this;
     }
     static calcRange(values, baseCell) {
@@ -166,14 +192,14 @@ class ExcelUtil {
             yield this.excelRuner((context) => __awaiter(this, void 0, void 0, function* () {
                 const sheet = context.workbook.worksheets.getItem(this.sheetName);
                 const ranges = new Array();
-                for (const session of this.writeSessionTemp) {
+                for (const session of __classPrivateFieldGet(this, _ExcelUtil_writeSessionTemp, "f")) {
                     const range = ExcelUtil.calcRange(session.values, session.baseCell);
                     const sheetRange = sheet.getRange(range);
                     sheetRange.values = session.values;
                     ranges.push(sheetRange);
                 }
                 yield context.sync();
-                this.writeSessionTemp = new Array();
+                __classPrivateFieldSet(this, _ExcelUtil_writeSessionTemp, new Array(), "f");
             }));
         });
     }
@@ -198,3 +224,4 @@ class ExcelUtil {
         return result - 1;
     }
 }
+_ExcelUtil_writeSessionTemp = new WeakMap();

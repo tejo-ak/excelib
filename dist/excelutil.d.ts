@@ -1,5 +1,6 @@
 declare function createUtil(sheetName: string, excelRuner: ExcelRunner): ExcelUtil;
 declare class ExcelUtil {
+    #private;
     excelRuner: ExcelRunner;
     sheetName: string;
     constructor(sheetName: string, excelRuner: ExcelRunner);
@@ -16,20 +17,13 @@ declare class ExcelUtil {
     writeCols(values: any[], baseCell: string): Promise<void>;
     startWriteSession(values: any[][], baseCell: string): WriteSessionChain;
     addWriteChain(values: any[][], baseCell: string): WriteSessionChain;
+    addRowWriteChain(values: any[], baseCell: string): WriteSessionChain;
+    addColWriteChain(values: any[], baseCell: string): WriteSessionChain;
     static calcRange(values: any[][], baseCell: string): string;
-    writeSessionTemp: WriteSession[];
     sessionWrite(): Promise<void>;
     static toColumnName(index: number): string;
     static toColumnNumber(val: string): number;
 }
-type SettingsChain = {
-    addSettings: {
-        (key: string, val: any): SettingsChain;
-    };
-    write: {
-        (): void;
-    };
-};
 type WriteSessionChain = {
     addWriteChain: {
         (values: any[][], baseCell: string): WriteSessionChain;

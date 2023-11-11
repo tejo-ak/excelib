@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 //import { ExcelUtil, ExcelRunner } from "./excelutil";
-export class ExcelSetting {
+class ExcelSetting {
     constructor(sheetName, paramKeys, runner, baseCell = "A2") {
         this.settingsTemp = new Map();
         this.sheetName = sheetName;

@@ -1,4 +1,4 @@
-export declare class ExcelSetting {
+declare class ExcelSetting {
     sheetName: string;
     baseCell: string;
     excelUtil: ExcelUtil;
@@ -10,7 +10,7 @@ export declare class ExcelSetting {
     write(): Promise<void>;
     readAsMap(range: string): Promise<Map<string, any>>;
 }
-export type SettingsChain = {
+type SettingsChain = {
     addSettings: {
         (key: string, val: any): SettingsChain;
     };
