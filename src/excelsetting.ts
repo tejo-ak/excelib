@@ -1,5 +1,5 @@
 //import { ExcelUtil, ExcelRunner } from "./excelutil";
-export class ExcelSetting {
+class ExcelSetting {
     sheetName: string;
     baseCell: string;
     excelUtil: ExcelUtil;
@@ -37,7 +37,7 @@ export class ExcelSetting {
     }
   }
 
-  export type SettingsChain = {
+  type SettingsChain = {
     addSettings: { (key: string, val: any): SettingsChain };
     write: { ():void };
   };

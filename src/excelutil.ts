@@ -108,13 +108,28 @@ class ExcelUtil {
       await this.writeValues(newValues, baseCell);
     }
     startWriteSession(values: any[][], baseCell: string): WriteSessionChain {
-      this.writeSessionTemp = new Array();
+      this.#writeSessionTemp = new Array();
       return this.addWriteChain(values, baseCell);
     }
     addWriteChain(values: any[][], baseCell: string): WriteSessionChain {
-      this.writeSessionTemp.push({ values: values, baseCell: baseCell });
+      this.#writeSessionTemp.push({ values: values, baseCell: baseCell });
       return this;
     }
+    addRowWriteChain(values: any[], baseCell: string): WriteSessionChain {
+      const valuesArrays:any[][] = new Array();
+      for (const val of values) {
+        valuesArrays.push([values]);
+      }
+      this.addWriteChain(valuesArrays, baseCell);
+      return this;
+    }
+    addColWriteChain(values: any[], baseCell: string): WriteSessionChain {
+      const valuesArrays:any[][] = new Array();
+      valuesArrays.push(values)
+      this.addWriteChain(valuesArrays, baseCell);
+      return this;
+    }
+
     static calcRange(values: any[][], baseCell: string): string {
       const rangeWidth = values[0].length;
       const baseCol = (baseCell.match(/[a-zA-Z]/g)||[])[0] || "";
@@ -126,20 +141,20 @@ class ExcelUtil {
       const range = `${baseCell}:${endColName}${endRowNum}`;
       return range;
     }
-    writeSessionTemp: WriteSession[] = Array();
+    #writeSessionTemp: WriteSession[] = Array();
     async sessionWrite(): Promise<void> {
       const sheet = await this.ensureSheet();
       await this.excelRuner(async (context: any) => {
         const sheet = context.workbook.worksheets.getItem(this.sheetName);
         const ranges: any[] = new Array();
-        for (const session of this.writeSessionTemp) {
+        for (const session of this.#writeSessionTemp) {
           const range = ExcelUtil.calcRange(session.values, session.baseCell);
           const sheetRange = sheet.getRange(range);
           sheetRange.values = session.values;
           ranges.push(sheetRange);
         }
         await context.sync();
-        this.writeSessionTemp = new Array();
+        this.#writeSessionTemp = new Array();
       });
     }
     static toColumnName(index: number): string {
@@ -166,10 +181,6 @@ class ExcelUtil {
       return result - 1;
     }
   }
-  type SettingsChain = {
-    addSettings: { (key: string, val: any): SettingsChain };
-    write: { ():void };
-  };
   type WriteSessionChain = {
     addWriteChain: { (values: any[][], baseCell: string): WriteSessionChain };
     sessionWrite: { (): Promise<void> };
