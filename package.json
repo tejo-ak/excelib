@@ -16,8 +16,10 @@
     "@babel/preset-env": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
     "@types/jest": "^29.5.8",
+    "@types/rewire": "^2.5.30",
     "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
+    "rewire": "^7.0.0",
     "typescript": "^5.2.2"
   }
 }

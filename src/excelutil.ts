@@ -1,4 +1,3 @@
-
 class ExcelUtil {
   excelRuner: ExcelRunner;
   sheetName: string = "";
@@ -190,12 +189,9 @@ type WriteSessionChain = {
   addWriteChain: { (values: any[][], baseCell: string): WriteSessionChain };
   sessionWrite: { (): Promise<void> };
 };
+
 type WriteSession = {
   values: any[][];
   baseCell: string;
 };
 type ExcelRunner = { (context: any): Promise<any> };
-
-export const excelUtilTest = {
-  ExcelUtil
-}

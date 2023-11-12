@@ -37,7 +37,7 @@ class ExcelSetting {
                 if (!val)
                     continue;
                 const idx = this.settingFieldIndex.get(f);
-                if (!idx)
+                if (!idx && idx != 0)
                     continue;
                 postData[keyArray[idx]] = val;
             }

@@ -29,7 +29,7 @@ class ExcelSetting {
       const val = this.loadedSettings.get(f);
       if (!val) continue;
       const idx:number|undefined = this.settingFieldIndex.get(f);
-      if (!idx) continue;
+      if (!idx && idx!=0) continue;
       postData[keyArray[idx]] = val;
     }
     return postData
