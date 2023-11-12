@@ -195,3 +195,7 @@ type WriteSession = {
   baseCell: string;
 };
 type ExcelRunner = { (context: any): Promise<any> };
+
+export const excelUtilTest = {
+  ExcelUtil
+}
