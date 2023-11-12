@@ -3,12 +3,18 @@ declare class ExcelSetting {
     baseCell: string;
     excelUtil: ExcelUtil;
     paramKeys: any;
+    loadedSettings: Map<string, any>;
+    settingFieldIndex: Map<string, number>;
+    paramRange: string;
     constructor(sheetName: string, paramKeys: any, runner: ExcelRunner, baseCell?: string);
+    getJson(): Promise<any>;
+    initializeSettings(): void;
     settingsTemp: Map<string, any>;
-    writeSettings(key: string, val: any): SettingsChain;
-    addSettings(key: string, val: any): SettingsChain;
+    writeSettings(fieldKey: string, val: any): SettingsChain;
+    commitSettings(fieldKey: string, val: any): Promise<void>;
+    addSettings(fieldKey: string, val: any): SettingsChain;
     write(): Promise<void>;
-    readAsMap(range: string): Promise<Map<string, any>>;
+    sync(): Promise<Map<string, any>>;
 }
 type SettingsChain = {
     addSettings: {

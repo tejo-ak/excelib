@@ -8,26 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _ExcelUtil_writeSessionTemp;
-function createUtil(sheetName, excelRuner) {
-    const xl = new ExcelUtil(sheetName, excelRuner);
-    return xl;
-}
 class ExcelUtil {
     constructor(sheetName, excelRuner) {
         this.sheetName = "";
-        _ExcelUtil_writeSessionTemp.set(this, Array());
+        this.writeSessionTemp = Array();
         this.sheetName = sheetName;
         this.excelRuner = excelRuner;
     }
@@ -154,11 +138,13 @@ class ExcelUtil {
         });
     }
     startWriteSession(values, baseCell) {
-        __classPrivateFieldSet(this, _ExcelUtil_writeSessionTemp, new Array(), "f");
-        return this.addWriteChain(values, baseCell);
+        this.writeSessionTemp = new Array();
+        if (!!values && !!baseCell)
+            this.addWriteChain(values, baseCell);
+        return this;
     }
     addWriteChain(values, baseCell) {
-        __classPrivateFieldGet(this, _ExcelUtil_writeSessionTemp, "f").push({ values: values, baseCell: baseCell });
+        this.writeSessionTemp.push({ values: values, baseCell: baseCell });
         return this;
     }
     addRowWriteChain(values, baseCell) {
@@ -177,14 +163,23 @@ class ExcelUtil {
     }
     static calcRange(values, baseCell) {
         const rangeWidth = values[0].length;
+        const rangeHeight = values.length;
+        return ExcelUtil.calcRangeDimension(rangeHeight, rangeWidth, baseCell);
+    }
+    static calcRangeDimension(rows, cols, baseCell) {
+        const endAddress = ExcelUtil.calcAddress(rows, cols, baseCell);
+        const range = `${baseCell}:${endAddress}`;
+        return range;
+    }
+    static calcAddress(rows, cols, baseCell) {
+        const rangeWidth = cols;
         const baseCol = (baseCell.match(/[a-zA-Z]/g) || [])[0] || "";
         const baseRowNum = parseInt(baseCell.replace(baseCol, ""));
         const baseColNum = ExcelUtil.toColumnNumber(baseCol);
         const endColNum = baseColNum + rangeWidth - 1;
-        const endRowNum = baseRowNum + values.length - 1;
+        const endRowNum = baseRowNum + rows - 1;
         const endColName = ExcelUtil.toColumnName(endColNum);
-        const range = `${baseCell}:${endColName}${endRowNum}`;
-        return range;
+        return `${endColName}${endRowNum}`;
     }
     sessionWrite() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -192,14 +187,14 @@ class ExcelUtil {
             yield this.excelRuner((context) => __awaiter(this, void 0, void 0, function* () {
                 const sheet = context.workbook.worksheets.getItem(this.sheetName);
                 const ranges = new Array();
-                for (const session of __classPrivateFieldGet(this, _ExcelUtil_writeSessionTemp, "f")) {
+                for (const session of this.writeSessionTemp) {
                     const range = ExcelUtil.calcRange(session.values, session.baseCell);
                     const sheetRange = sheet.getRange(range);
                     sheetRange.values = session.values;
                     ranges.push(sheetRange);
                 }
                 yield context.sync();
-                __classPrivateFieldSet(this, _ExcelUtil_writeSessionTemp, new Array(), "f");
+                this.writeSessionTemp = new Array();
             }));
         });
     }
@@ -224,4 +219,3 @@ class ExcelUtil {
         return result - 1;
     }
 }
-_ExcelUtil_writeSessionTemp = new WeakMap();
